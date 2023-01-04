@@ -5,9 +5,9 @@ import time  # necessary for I2 communication
 def initialize_I2Cs():
     #  initializing I2C adress 0x20
     '''I2C address 0x20, side A, GPIOs set to output'''
-    i2cbus.write_word_data(0x20, 0x00, 0x00)
+    i2cbus.write_word_data(0x21, 0x00, 0x00)
     '''I2C address 0x20, side B, GPIOs set to output'''
-    i2cbus.write_word_data(0x20, 0x01, 0x00)
+    i2cbus.write_word_data(0x21, 0x01, 0x00)
 
 
 def switch_module_pin(module, pin):
@@ -17,6 +17,10 @@ def switch_module_pin(module, pin):
     # provide the module I2C adress as hex value
     if module == 1:
         i2caddress = 0x20
+    elif module == 2:
+        i2caddress = 0x21
+    elif module == 3:
+        i2caddress = 0x22
     else:
         print("error")
     # provide pin and side as hex value
