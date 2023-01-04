@@ -125,12 +125,12 @@ if __name__ == "__main__":
         switch_module_pin(1, 14)
         switch_module_pin(1, 15)
         switch_module_pin(1, 16)
-        switch_module_pin(1, 0) # no switching at all
-        switch_module_pin(1, 0) # no switching at all
-        switch_module_pin(1, 0) # no switching at all
-        switch_module_pin(1, 0) # no switching at all
+        switch_module_pin(1, 0)  # no switching at all
+        switch_module_pin(1, 0)  # no switching at all
+        switch_module_pin(1, 0)  # no switching at all
+        switch_module_pin(1, 0)  # no switching at all
         # module 2
-        switch_module_pin(2, 1) 
+        switch_module_pin(2, 1)
         switch_module_pin(2, 2)
         switch_module_pin(2, 3)
         switch_module_pin(2, 4)
