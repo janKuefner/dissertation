@@ -108,7 +108,7 @@ if __name__ == "__main__":
     i2cbus = SMBus(1)  # i2cbus object creation
     initialize_I2Cs()
     while (True):
-
+        # module 1
         switch_module_pin(1, 1)
         switch_module_pin(1, 2)
         switch_module_pin(1, 3)
@@ -125,7 +125,17 @@ if __name__ == "__main__":
         switch_module_pin(1, 14)
         switch_module_pin(1, 15)
         switch_module_pin(1, 16)
-        switch_module_pin(1, 0)
-        switch_module_pin(1, 0)
-        switch_module_pin(1, 0)
-        switch_module_pin(1, 0)
+        switch_module_pin(1, 0) # no switching at all
+        switch_module_pin(1, 0) # no switching at all
+        switch_module_pin(1, 0) # no switching at all
+        switch_module_pin(1, 0) # no switching at all
+        # module 2
+        switch_module_pin(2, 1) 
+        switch_module_pin(2, 2)
+        switch_module_pin(2, 3)
+        switch_module_pin(2, 4)
+        switch_module_pin(2, 5)
+        switch_module_pin(2, 6)
+        switch_module_pin(2, 7)
+        switch_module_pin(2, 8)
+        switch_module_pin(2, 9)
