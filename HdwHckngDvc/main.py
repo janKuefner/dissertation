@@ -123,7 +123,7 @@ def switch_row_pin(row, pin):
     '''this function switches the pin per row of a keyboard'''
     if row == 1:
         if pin == 1:
-            print("yolo")
+            switch_module_pin(3, 3)
         elif pin == 2:
             switch_module_pin(1, 10)
         elif pin == 3:
@@ -140,7 +140,7 @@ def switch_row_pin(row, pin):
             raise ValueError("This pin number is not defined in this row")
     elif row == 2:
         if pin == 1:
-            print("yolo")
+            switch_module_pin(3, 2)
         elif pin == 2:
             switch_module_pin(2, 9)
         elif pin == 3:
@@ -158,14 +158,14 @@ def switch_row_pin(row, pin):
         elif pin == 9:
             switch_module_pin(2, 16)
         elif pin == 10:
-            switch_module_pin(3, 2)
+            switch_module_pin(3, 11)
         elif pin == 11:
-            switch_module_pin(3, 1)
+            switch_module_pin(3, 9)
         else:
             raise ValueError("This pin number is not defined")
     elif row == 3:
         if pin == 1:
-            print("yolo")
+            switch_module_pin(3, 16)
         elif pin == 2:
             switch_module_pin(1, 4)
         elif pin == 3:
@@ -175,15 +175,15 @@ def switch_row_pin(row, pin):
         elif pin == 5:
             switch_module_pin(1, 1)
         elif pin == 6:
-            print("yolo")
+            switch_module_pin(3, 10)
         elif pin == 7:
-            switch_module_pin(3, 8)
+            switch_module_pin(3, 12)
         elif pin == 8:
             switch_module_pin(3, 5)
         elif pin == 9:
             switch_module_pin(3, 6)
         elif pin == 10:
-            switch_module_pin(3, 3)
+            switch_module_pin(3, 13)
         elif pin == 11:
             switch_module_pin(3, 4)
         else:
@@ -234,37 +234,69 @@ def switch_every_actuator_once_sorted():
     time.sleep(1)
     print("1")
     time.sleep(1)
-    for p in range (1,8):
+    for p in range(1, 8):
         switch_row_pin(1, p)
-        time.sleep(1)
+        time.sleep(0.5)
         print("Reihe ", 1, " Pin ", p, "hat geschalten")
 
     for m in range(2, 5):
         for p in range(1, 12):
             switch_row_pin(m, p)
-            time.sleep(1)
+            time.sleep(0.5)
             print("Reihe ", m, " Pin ", p, "hat geschalten")
 
 
 def hack_type_char(char_to_hacktype):
-    if char_to_hacktype == "a":
-        switch_module_pin(1, 1)
+    '''row 1'''
+    if char_to_hacktype == " ":
+        switch_row_pin(1, 4) 
+        ''' row 2 small letters '''
+    elif char_to_hacktype == "z":
+        switch_row_pin(2, 2)
+    elif char_to_hacktype == "x":
+        switch_row_pin(2, 3)
+    elif char_to_hacktype == "c":
+        switch_row_pin(2, 4)
+    elif char_to_hacktype == "v":
+        switch_row_pin(2, 5)
     elif char_to_hacktype == "b":
-        switch_module_pin(1, 2)
+        switch_row_pin(2, 6)
+    elif char_to_hacktype == "n":
+        switch_row_pin(2, 7)
+    elif char_to_hacktype == "m":
+        switch_row_pin(2, 8)
+        ''' row 3 small letters '''
+    elif char_to_hacktype == "a":
+        switch_row_pin(3, 2)
+    elif char_to_hacktype == "s":
+        switch_row_pin(3, 3)
+    elif char_to_hacktype == "d":
+        switch_row_pin(3, 4)
+    elif char_to_hacktype == "f":
+        switch_row_pin(3, 5)
+    elif char_to_hacktype == "g":
+        switch_row_pin(3, 6)
+    elif char_to_hacktype == "h":
+        switch_row_pin(3, 7)
+    elif char_to_hacktype == "j":
+        switch_row_pin(3, 8)
+    elif char_to_hacktype == "k":
+        switch_row_pin(3, 9)
+    elif char_to_hacktype == "l":
+        switch_row_pin(3, 10)
     else:
         # raise ValueError("This char is not defined")
-        print("This char is not defined")
+        print(char_to_hacktype, " is not defined")
+
+
+def hack_type_string(string_to_hacktype):
+    for letter in string_to_hacktype:
+        hack_type_char(letter)
 
 
 if __name__ == "__main__":
     i2cbus = SMBus(1)  # i2cbus object creation
     initialize_I2Cs()
-    # switch_row_pin(3, 5)
-    # switch_every_actuator_once()
-    switch_every_actuator_once()
-    '''
     while (True):
-        switch_every_actuator_once_sorted()
-        # letter_to_type = input("Enter Char:")
-        # hack_type_char(letter_to_type)
-    '''
+        user_input = input("Enter String: ")
+        hack_type_string(user_input)
