@@ -6,7 +6,7 @@ picam2 = Picamera2()
 picam2.start_preview(Preview.QTGL)
 picam2.start()
 time.sleep(2)
-picam2.capture_file("images/image01.jpg")  # takes a picture with size 640 x 480 
+picam2.capture_file("images/image01.jpg")  # takes a picture size 640 x 480
 print("picture taken")
 
 
