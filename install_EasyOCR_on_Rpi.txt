@@ -1,0 +1,20 @@
+What to install for Torch:
+https://github.com/JaidedAI/EasyOCR/issues/387
+
+
+1. 
+Install a 64 bit Rpi OS (64bit Dewbian Bullseye)
+
+check via 
+$ uname -m
+--> aarch64  == 64 bit
+--> armv7l   == 32 bit
+
+2. install 
+pip install torch==1.13.1 
+pip install torchvision==0.10.1  # this seems to be the bitch, bro
+
+not sure, if necessary
+pip install torchaudio #latest
+pip install numpy --upgrade #1.24.1
+

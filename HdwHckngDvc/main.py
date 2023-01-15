@@ -1,5 +1,7 @@
 from smbus import SMBus  # necessary for I2C communication
-import time  # necessary for I2 communication
+from time import sleep  # necessary for I2 communication
+from picamera import PiCamera  # https://picamera.readthedocs.io 
+import easyocr  # https://github.com/JaidedAI/EasyOCR
 
 
 def initialize_I2Cs():
@@ -96,7 +98,7 @@ def switch_module_pin(module, pin):
     while (sent == False):
         try:
             i2cbus.write_byte_data(i2caddress, A_or_B_side, pin_hex)
-            time.sleep(time_actuator_on)
+            sleep(time_actuator_on)
             sent = True
         except OSError:
             sent = False
@@ -105,7 +107,7 @@ def switch_module_pin(module, pin):
     while (sent == False):
         try:
             i2cbus.write_byte_data(i2caddress, 0x12, 0x00)
-            time.sleep(time_actuator_off / 2)
+            sleep(time_actuator_off / 2)
             sent = True
         except OSError:
             sent = False
@@ -113,7 +115,7 @@ def switch_module_pin(module, pin):
     while (sent == False):
         try:
             i2cbus.write_byte_data(i2caddress, 0x15, 0x00)
-            time.sleep(time_actuator_off / 2)
+            sleep(time_actuator_off / 2)
             sent = True
         except OSError:
             sent = False
@@ -228,21 +230,15 @@ def switch_every_actuator_once():
 def switch_every_actuator_once_sorted():
     '''this function switches all actuators once. This function is sort of to
     help setting up or troubleshooting the hardware.'''
-    print("3")
-    time.sleep(1)
-    print("2")
-    time.sleep(1)
-    print("1")
-    time.sleep(1)
     for p in range(1, 8):
         switch_row_pin(1, p)
-        time.sleep(0.5)
+        sleep(0.5)
         print("Reihe ", 1, " Pin ", p, "hat geschalten")
 
     for m in range(2, 5):
         for p in range(1, 12):
             switch_row_pin(m, p)
-            time.sleep(0.5)
+            sleep(0.5)
             print("Reihe ", m, " Pin ", p, "hat geschalten")
 
 
@@ -297,6 +293,14 @@ def hack_type_string(string_to_hacktype):
 if __name__ == "__main__":
     i2cbus = SMBus(1)  # i2cbus object creation
     initialize_I2Cs()
+    ''' the following needs to run only once to load the model into memory'''
+    reader = easyocr.Reader(['ch_sim','en']) 
+    camera = PiCamera()  # open a camera object to take pictures
+    camera.start_preview()  # cam on for adjusting to brightness
+    sleep(2)  # give the camera some time to do the adjusting to environment
     while (True):
         user_input = input("Enter String: ")
         hack_type_string(user_input)
+        sleep(1)  # wait for the machine to type the character
+        camera.capture('images/image.jpg')  # take a picture of what was typed
+        result = reader.readtext('images/image.jpg')  # AI OCR the image
