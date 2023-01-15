@@ -5,7 +5,7 @@ import time
 picam2 = Picamera2()
 picam2.start_preview(Preview.QTGL)
 picam2.start()
-time.sleep(2)
+time.sleep(2)  # give the camera some time to adjust
 picam2.capture_file("images/image01.jpg")  # takes a picture size 640 x 480
 print("picture taken")
 
