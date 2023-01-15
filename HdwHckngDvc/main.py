@@ -1,6 +1,6 @@
 from smbus import SMBus  # necessary for I2C communication
 from time import sleep  # necessary for I2 communication
-from picamera import PiCamera  # https://picamera.readthedocs.io 
+from picamera2 import Picamera2, Preview  # for taking pictures of the result
 import easyocr  # https://github.com/JaidedAI/EasyOCR
 
 
@@ -291,16 +291,26 @@ def hack_type_string(string_to_hacktype):
 
 
 if __name__ == "__main__":
+    print("starting up...")
+    '''start up I2C bus'''
     i2cbus = SMBus(1)  # i2cbus object creation
     initialize_I2Cs()
-    ''' the following needs to run only once to load the model into memory'''
-    reader = easyocr.Reader(['ch_sim','en']) 
-    camera = PiCamera()  # open a camera object to take pictures
-    camera.start_preview()  # cam on for adjusting to brightness
+    '''start up the camera'''
+    picam2 = Picamera2()
+    picam2.start_preview(Preview.QTGL)
+    picam2.start()
     sleep(2)  # give the camera some time to do the adjusting to environment
+    ''' start up the easyocr model'''
+    reader = easyocr.Reader(['en'], gpu=False)  # load model into memory
+    '''loop the main program'''
     while (True):
         user_input = input("Enter String: ")
         hack_type_string(user_input)
         sleep(1)  # wait for the machine to type the character
-        camera.capture('images/image.jpg')  # take a picture of what was typed
-        result = reader.readtext('images/image.jpg')  # AI OCR the image
+        '''take a picture'''
+        picam2.capture_file("images/image01.jpg")  # picture size = 640 x 480 
+        print("picture taken")
+        '''AI OCR the picture'''
+        print("starting AI OCR, this might take a while")
+        result = reader.readtext('images/image01.jpg', detail=0)
+        print(result)
