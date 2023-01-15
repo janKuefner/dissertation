@@ -1,0 +1,43 @@
+################ pytesseract
+pip install pytesseract
+
+
+https://phoenixnap.com/kb/linux-add-to-path
+https://linuxize.com/post/how-to-add-directory-to-path-in-linux/ 
+echo $PATH
+export PATH="/home/pi/.local/bin:$PATH"
+nano ~/.bashrc
+source ~/.bashrc
+
+
+################ CV camera
+didn`t work :(
+# pip install opencv-contrib-python
+pip install opencv-python==4.5.5.64 #wichtig, sonst Kamera nix funzt
+
+################ check camera
+libcamera-hello
+
+
+
+################ easyocr
+https://github.com/JaidedAI/EasyOCR/issues/387
+
+
+1. 
+Install a 64 bit Rpi OS (64bit Dewbian Bullseye)
+
+check via 
+$ uname -m
+--> aarch64  == 64 bit
+--> armv7l   == 32 bit
+
+2. install 
+pip install torch==1.13.1 
+pip install torchvision==0.10.0  # this seems to be the bitch, bro
+pip install easyocr
+pip install numpy --upgrade
+
+not sure, if necessary
+pip install torchaudio
+
