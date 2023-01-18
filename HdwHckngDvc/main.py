@@ -167,7 +167,7 @@ def switch_row_pin(row, pin):
             raise ValueError("This pin number is not defined")
     elif row == 3:
         if pin == 1:
-            switch_module_pin(3, 16)
+            switch_module_pin(3, 15)
         elif pin == 2:
             switch_module_pin(1, 4)
         elif pin == 3:
@@ -291,7 +291,7 @@ def hack_type_string(string_to_hacktype):
 
 
 if __name__ == "__main__":
-    print("starting up...")
+    print("starting camera...")
     '''start up I2C bus'''
     i2cbus = SMBus(1)  # i2cbus object creation
     initialize_I2Cs()
@@ -301,6 +301,7 @@ if __name__ == "__main__":
     picam2.start()
     sleep(2)  # give the camera some time to do the adjusting to environment
     ''' start up the easyocr model'''
+    print("starting AI OCR ...")
     reader = easyocr.Reader(['en'], gpu=False)  # load model into memory
     '''loop the main program'''
     while (True):
