@@ -1,3 +1,6 @@
+################ Kivy
+python -m pip install kivy
+
 ################ smbus / I2C
 sudo raspi-config
 elect Interfacing options->I2C choose and hit Enter, then go to Finish and reboot.

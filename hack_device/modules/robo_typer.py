@@ -26,8 +26,8 @@ class Robo_typer(SMBus):
     def switch_module_pin(self, module, pin):
         '''this funnction sitches actuator of a certain module and pin'''
         # general times the actuator stays actived / deactiveted
-        time_actuator_on = 0.1   # time the actuator is powered. 0.1 is good
-        time_actuator_off = 0.001  # time the actuator is off. 0.001 is good
+        time_actuator_on = 0.1   # time the actuator is powered.
+        time_actuator_off = 0.01  # time the actuator is off.
         '''the following code switches on and off a certain actuator'''
         # get the module I2C adress as hex value
         if module == 1:
@@ -277,6 +277,27 @@ class Robo_typer(SMBus):
             self.switch_row_pin(3, 9)
         elif char_to_hacktype == "l":
             self.switch_row_pin(3, 10)
+            ''' row 4 small letters '''
+        elif char_to_hacktype == "q":
+            self.switch_row_pin(4, 1)
+        elif char_to_hacktype == "w":
+            self.switch_row_pin(4, 2)
+        elif char_to_hacktype == "e":
+            self.switch_row_pin(4, 3)
+        elif char_to_hacktype == "r":
+            self.switch_row_pin(4, 4)
+        elif char_to_hacktype == "t":
+            self.switch_row_pin(4, 5)
+        elif char_to_hacktype == "y":
+            self.switch_row_pin(4, 6)
+        elif char_to_hacktype == "u":
+            self.switch_row_pin(4, 7)
+        elif char_to_hacktype == "i":
+            self.switch_row_pin(4, 8)
+        elif char_to_hacktype == "o":
+            self.switch_row_pin(4, 9)
+        elif char_to_hacktype == "p":
+            self.switch_row_pin(4, 10)
         else:
             # raise ValueError("This char is not defined")
             print(char_to_hacktype, " is not defined")

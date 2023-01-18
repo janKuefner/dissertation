@@ -1,2 +1,1 @@
-scp HdwHckngDvc/*.* pi@192.168.1.165:/home/pi/Desktop
-scp HdwHckngDvc/modules/*.* pi@192.168.1.165:/home/pi/Desktop/modules
+scp -r hack_device/ pi@192.168.1.165:/home/pi/Desktop
