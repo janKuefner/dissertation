@@ -1,9 +1,15 @@
 from picamera2 import Picamera2, Preview  # for taking pictures of the result
 import easyocr  # https://github.com/JaidedAI/EasyOCR
 from modules.robo_typer import Robo_typer
-import time
+from time import sleep
 
+if __name__ == "__main__":
+    robo_typer = Robo_typer()  # create a robo_typer object
+    robo_typer.initialize_I2Cs()  # initalize I2C
+    robo_typer.switch_every_actuator_once_sorted()
+    # robo_typer.switch_row_pin(1, 4)
 
+'''
 if __name__ == "__main__":
     robo_typer = Robo_typer()  # create a robo_typer object
     robo_typer.initialize_I2Cs()  # initalize I2C
@@ -16,6 +22,7 @@ if __name__ == "__main__":
         print("I am typing:", line)
         robo_typer.hack_type_string(line.strip('\n') + "   ")
         picam2.capture_file("images/image01.jpg")  # picture size = 640 x 480
-        time.sleep(4)
+        sleep(4)
         # result = reader.readtext('images/image01.jpg', detail=0)
         # print(result)
+'''
