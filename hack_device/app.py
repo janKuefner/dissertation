@@ -14,7 +14,7 @@ if __name__ == "__main__":
     file_in_memory = open("wordlists/fasttrack.txt", "r")
     for line in file_in_memory:
         print("I am typing:", line)
-        robo_typer.hack_type_string(line.strip('\n'))
+        robo_typer.hack_type_string(line.strip('\n') + "   ")
         picam2.capture_file("images/image01.jpg")  # picture size = 640 x 480
         time.sleep(4)
         # result = reader.readtext('images/image01.jpg', detail=0)

@@ -5,6 +5,7 @@ from time import sleep  # necessary for I2 communication
 class Robo_typer(SMBus):
     def __init__(self):
         self.i2cbus = SMBus(1)
+        self.switched_to_numbers = False
 
     def initialize_I2Cs(self):
         #  initializing I2C adress 0x20
@@ -240,10 +241,11 @@ class Robo_typer(SMBus):
                 print("Reihe ", m, " Pin ", p, "hat geschalten")
 
     def hack_type_char(self, char_to_hacktype):
+        if self.switched_to_numbers == False and char_to_hacktype == "z":
         '''row 1'''
         if char_to_hacktype == " ":
             self.switch_row_pin(1, 4)
-            ''' row 2 small letters '''
+            ''' row 2 '''
         elif char_to_hacktype == "z":
             self.switch_row_pin(2, 2)
         elif char_to_hacktype == "x":
@@ -258,7 +260,7 @@ class Robo_typer(SMBus):
             self.switch_row_pin(2, 7)
         elif char_to_hacktype == "m":
             self.switch_row_pin(2, 8)
-            ''' row 3 small letters '''
+            ''' row 3  '''
         elif char_to_hacktype == "a":
             self.switch_row_pin(3, 2)
         elif char_to_hacktype == "s":
@@ -277,7 +279,7 @@ class Robo_typer(SMBus):
             self.switch_row_pin(3, 9)
         elif char_to_hacktype == "l":
             self.switch_row_pin(3, 10)
-            ''' row 4 small letters '''
+            ''' row 4 '''
         elif char_to_hacktype == "q":
             self.switch_row_pin(4, 1)
         elif char_to_hacktype == "w":
