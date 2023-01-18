@@ -1,5 +1,6 @@
 from smbus2 import SMBus  # necessary for I2C communication
 from time import sleep  # necessary for I2 communication
+import json
 
 
 class Robo_typer(SMBus):
@@ -123,101 +124,14 @@ class Robo_typer(SMBus):
                 sent = False
 
     def switch_row_pin(self, row, pin):
-        '''this function switches the pin per row of a keyboard'''
-        if row == 1:
-            if pin == 1:
-                self.switch_module_pin(3, 3)
-            elif pin == 2:
-                self.switch_module_pin(1, 10)
-            elif pin == 3:
-                self.switch_module_pin(1, 11)
-            elif pin == 4:
-                self.switch_module_pin(1, 12)
-            elif pin == 5:
-                self.switch_module_pin(1, 14)
-            elif pin == 6:
-                self.switch_module_pin(1, 13)
-            elif pin == 7:
-                self.switch_module_pin(1, 15)
-            else:
-                raise ValueError("This pin number is not defined in this row")
-        elif row == 2:
-            if pin == 1:
-                self.switch_module_pin(3, 2)
-            elif pin == 2:
-                self.switch_module_pin(2, 9)
-            elif pin == 3:
-                self.switch_module_pin(2, 10)
-            elif pin == 4:
-                self.switch_module_pin(2, 11)
-            elif pin == 5:
-                self.switch_module_pin(2, 12)
-            elif pin == 6:
-                self.switch_module_pin(2, 14)
-            elif pin == 7:
-                self.switch_module_pin(2, 13)
-            elif pin == 8:
-                self.switch_module_pin(2, 15)
-            elif pin == 9:
-                self.switch_module_pin(2, 16)
-            elif pin == 10:
-                self.switch_module_pin(3, 11)
-            elif pin == 11:
-                self.switch_module_pin(3, 9)
-            else:
-                raise ValueError("This pin number is not defined")
-        elif row == 3:
-            if pin == 1:
-                self.switch_module_pin(3, 15)
-            elif pin == 2:
-                self.switch_module_pin(1, 4)
-            elif pin == 3:
-                self.switch_module_pin(1, 3)
-            elif pin == 4:
-                self.switch_module_pin(1, 2)
-            elif pin == 5:
-                self.switch_module_pin(1, 1)
-            elif pin == 6:
-                self.switch_module_pin(3, 10)
-            elif pin == 7:
-                self.switch_module_pin(3, 12)
-            elif pin == 8:
-                self.switch_module_pin(3, 5)
-            elif pin == 9:
-                self.switch_module_pin(3, 6)
-            elif pin == 10:
-                self.switch_module_pin(3, 13)
-            elif pin == 11:
-                self.switch_module_pin(3, 4)
-            else:
-                raise ValueError("This pin number is not defined")
-        elif row == 4:
-            if pin == 1:
-                self.switch_module_pin(1, 7)
-            elif pin == 2:
-                self.switch_module_pin(1, 6)
-            elif pin == 3:
-                self.switch_module_pin(2, 8)
-            elif pin == 4:
-                self.switch_module_pin(1, 8)
-            elif pin == 5:
-                self.switch_module_pin(2, 6)
-            elif pin == 6:
-                self.switch_module_pin(2, 7)
-            elif pin == 7:
-                self.switch_module_pin(2, 4)
-            elif pin == 8:
-                self.switch_module_pin(2, 5)
-            elif pin == 9:
-                self.switch_module_pin(2, 2)
-            elif pin == 10:
-                self.switch_module_pin(2, 3)
-            elif pin == 11:
-                self.switch_module_pin(2, 1)
-            else:
-                raise ValueError("This pin number is not defined")
-        else:
-            raise ValueError("This row number is not defined")
+        with open('modules/electronics_to_mechanics.json') as json_file:
+            e_to_m_data = json.load(json_file)
+        for x in range(40):
+            if ((e_to_m_data[x]["row"]) == row and (e_to_m_data[x]["actuator"]) == pin):
+                self.switch_module_pin((e_to_m_data[x]["module"]), (e_to_m_data[x]["outlet_number"]))
+            # else:
+                # raise ValueError("This pin / row combination is not defined")
+                # print("This pin / row combination is not defined")
 
     def switch_every_actuator_once(self):
         '''this function switches all actuators once. This function is sort of
@@ -241,7 +155,6 @@ class Robo_typer(SMBus):
                 print("Reihe ", m, " Pin ", p, "hat geschalten")
 
     def hack_type_char(self, char_to_hacktype):
-        if self.switched_to_numbers == False and char_to_hacktype == "z":
         '''row 1'''
         if char_to_hacktype == " ":
             self.switch_row_pin(1, 4)
