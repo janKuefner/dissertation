@@ -6,7 +6,9 @@ from time import sleep
 if __name__ == "__main__":
     robo_typer = Robo_typer()  # create a robo_typer object
     robo_typer.initialize_I2Cs()  # initalize I2C
-    robo_typer.switch_every_actuator_once_sorted()
+    robo_typer.type_char("s")
+    sleep(3)
+    robo_typer.type_string("sdsfsdfasf")
     
     '''
     robo_typer.switch_module_outlet(3, 8)

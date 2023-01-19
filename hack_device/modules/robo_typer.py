@@ -52,18 +52,18 @@ class Robo_typer(SMBus):
             except OSError:
                 sent = False
 
-    def switch_row_pin(self, row, pin):
+    def switch_row_actuator(self, row, actuator):
         with open('modules/electronics_to_mechanics.json') as json_file:
             e_to_m_data = json.load(json_file)
             data_entry_found = False
         for x in range(40):
             if (((e_to_m_data[x]["row"] == row and
-                  e_to_m_data[x]["actuator"] == pin))):
+                  e_to_m_data[x]["actuator"] == actuator))):
                 self.switch_module_outlet((e_to_m_data[x]["module"]),
                                           (e_to_m_data[x]["outlet"]))
                 data_entry_found = True
         if data_entry_found is False:
-            raise ValueError("row #", row, "actuator #", pin,
+            raise ValueError("row #", row, "actuator #", actuator,
                              " combination is not defined")
 
     def switch_every_actuator_once(self):
@@ -77,74 +77,74 @@ class Robo_typer(SMBus):
         '''this function switches all actuators once. This function is
         to help setting up or troubleshooting the hardware.'''
         for p in range(1, 8):
-            self.switch_row_pin(1, p)
+            self.switch_row_actuator(1, p)
         for m in range(2, 5):
             for p in range(1, 12):
-                self.switch_row_pin(m, p)
+                self.switch_row_actuator(m, p)
 
-    def hack_type_char(self, char_to_hacktype):
+    def type_char(self, char_to_hacktype):
         '''row 1'''
         if char_to_hacktype == " ":
-            self.switch_row_pin(1, 4)
+            self.switch_row_actuator(1, 4)
             ''' row 2 '''
         elif char_to_hacktype == "z":
-            self.switch_row_pin(2, 2)
+            self.switch_row_actuator(2, 2)
         elif char_to_hacktype == "x":
-            self.switch_row_pin(2, 3)
+            self.switch_row_actuator(2, 3)
         elif char_to_hacktype == "c":
-            self.switch_row_pin(2, 4)
+            self.switch_row_actuator(2, 4)
         elif char_to_hacktype == "v":
-            self.switch_row_pin(2, 5)
+            self.switch_row_actuator(2, 5)
         elif char_to_hacktype == "b":
-            self.switch_row_pin(2, 6)
+            self.switch_row_actuator(2, 6)
         elif char_to_hacktype == "n":
-            self.switch_row_pin(2, 7)
+            self.switch_row_actuator(2, 7)
         elif char_to_hacktype == "m":
-            self.switch_row_pin(2, 8)
+            self.switch_row_actuator(2, 8)
             ''' row 3  '''
         elif char_to_hacktype == "a":
-            self.switch_row_pin(3, 2)
+            self.switch_row_actuator(3, 2)
         elif char_to_hacktype == "s":
-            self.switch_row_pin(3, 3)
+            self.switch_row_actuator(3, 3)
         elif char_to_hacktype == "d":
-            self.switch_row_pin(3, 4)
+            self.switch_row_actuator(3, 4)
         elif char_to_hacktype == "f":
-            self.switch_row_pin(3, 5)
+            self.switch_row_actuator(3, 5)
         elif char_to_hacktype == "g":
-            self.switch_row_pin(3, 6)
+            self.switch_row_actuator(3, 6)
         elif char_to_hacktype == "h":
-            self.switch_row_pin(3, 7)
+            self.switch_row_actuator(3, 7)
         elif char_to_hacktype == "j":
-            self.switch_row_pin(3, 8)
+            self.switch_row_actuator(3, 8)
         elif char_to_hacktype == "k":
-            self.switch_row_pin(3, 9)
+            self.switch_row_actuator(3, 9)
         elif char_to_hacktype == "l":
-            self.switch_row_pin(3, 10)
+            self.switch_row_actuator(3, 10)
             ''' row 4 '''
         elif char_to_hacktype == "q":
-            self.switch_row_pin(4, 1)
+            self.switch_row_actuator(4, 1)
         elif char_to_hacktype == "w":
-            self.switch_row_pin(4, 2)
+            self.switch_row_actuator(4, 2)
         elif char_to_hacktype == "e":
-            self.switch_row_pin(4, 3)
+            self.switch_row_actuator(4, 3)
         elif char_to_hacktype == "r":
-            self.switch_row_pin(4, 4)
+            self.switch_row_actuator(4, 4)
         elif char_to_hacktype == "t":
-            self.switch_row_pin(4, 5)
+            self.switch_row_actuator(4, 5)
         elif char_to_hacktype == "y":
-            self.switch_row_pin(4, 6)
+            self.switch_row_actuator(4, 6)
         elif char_to_hacktype == "u":
-            self.switch_row_pin(4, 7)
+            self.switch_row_actuator(4, 7)
         elif char_to_hacktype == "i":
-            self.switch_row_pin(4, 8)
+            self.switch_row_actuator(4, 8)
         elif char_to_hacktype == "o":
-            self.switch_row_pin(4, 9)
+            self.switch_row_actuator(4, 9)
         elif char_to_hacktype == "p":
-            self.switch_row_pin(4, 10)
+            self.switch_row_actuator(4, 10)
         else:
             # raise ValueError("This char is not defined")
             print(char_to_hacktype, " is not defined")
 
-    def hack_type_string(self, string_to_hacktype):
+    def type_string(self, string_to_hacktype):
         for letter in string_to_hacktype:
-            self.hack_type_char(letter)
+            self.type_char(letter)
