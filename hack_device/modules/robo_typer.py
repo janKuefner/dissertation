@@ -98,7 +98,7 @@ class Robo_typer(SMBus):
             raise ValueError("This pin number is not defined")
         '''send hex values to chip in order to switch on the actuactor'''
         sent = False
-        while (sent == False):
+        while (sent is False):
             try:
                 self.i2cbus.write_byte_data(i2caddress, A_or_B_side, pin_hex)
                 sleep(time_actuator_on)
@@ -107,7 +107,7 @@ class Robo_typer(SMBus):
                 sent = False
         ''' switch off A and B side'''
         sent = False
-        while (sent == False):
+        while (sent is False):
             try:
                 self.i2cbus.write_byte_data(i2caddress, 0x12, 0x00)
                 sleep(time_actuator_off / 2)
@@ -115,7 +115,7 @@ class Robo_typer(SMBus):
             except OSError:
                 sent = False
         sent = False
-        while (sent == False):
+        while (sent is False):
             try:
                 self.i2cbus.write_byte_data(i2caddress, 0x15, 0x00)
                 sleep(time_actuator_off / 2)
@@ -126,12 +126,16 @@ class Robo_typer(SMBus):
     def switch_row_pin(self, row, pin):
         with open('modules/electronics_to_mechanics.json') as json_file:
             e_to_m_data = json.load(json_file)
+            data_entry_found = False
         for x in range(40):
-            if ((e_to_m_data[x]["row"]) == row and (e_to_m_data[x]["actuator"]) == pin):
-                self.switch_module_pin((e_to_m_data[x]["module"]), (e_to_m_data[x]["outlet_number"]))
-            # else:
-                # raise ValueError("This pin / row combination is not defined")
-                # print("This pin / row combination is not defined")
+            if (((e_to_m_data[x]["row"] == row and
+                  e_to_m_data[x]["actuator"] == pin))):
+                self.switch_module_pin((e_to_m_data[x]["module"]),
+                                       (e_to_m_data[x]["outlet_number"]))
+                data_entry_found = True
+        if data_entry_found is False:
+            raise ValueError("row #", row, "actuator #", pin,
+                             " combination is not defined")
 
     def switch_every_actuator_once(self):
         '''this function switches all actuators once. This function is sort of
