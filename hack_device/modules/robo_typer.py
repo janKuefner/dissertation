@@ -5,7 +5,7 @@ import json
 
 class Robo_typer(SMBus):
     def __init__(self):
-        self.i2cbus = SMBus(1)
+        self.i2c = SMBus(1)
         self.switched_to_numbers = False
 
     def initialize_I2Cs(self):
@@ -14,12 +14,12 @@ class Robo_typer(SMBus):
         2nd value is the side of the chip 0 = side A, 1 = side B
         3rd value is the command. 0 sets the GPIO pins to output
         I2C address 0x20, side A, GPIOs set to output'''
-        self.i2cbus.write_word_data(32, 0, 0)
-        self.i2cbus.write_word_data(32, 1, 0)
-        self.i2cbus.write_word_data(33, 0, 0)
-        self.i2cbus.write_word_data(33, 1, 0)
-        self.i2cbus.write_word_data(34, 0, 0)
-        self.i2cbus.write_word_data(34, 1, 0)
+        self.i2c.write_word_data(32, 0, 0)
+        self.i2c.write_word_data(32, 1, 0)
+        self.i2c.write_word_data(33, 0, 0)
+        self.i2c.write_word_data(33, 1, 0)
+        self.i2c.write_word_data(34, 0, 0)
+        self.i2c.write_word_data(34, 1, 0)
 
     def switch_module_outlet(self, module, outlet):
         '''this funnction sitches actuator of a certain module and
@@ -32,11 +32,12 @@ class Robo_typer(SMBus):
         while (sent is False):
             try:
                 for x in range(51):
-                    if (((I2C_data[x]["module"] == module and I2C_data[x]["outlet"] == outlet))):
-                        self.i2cbus.write_byte_data(((I2C_data[x]["module_I2C"])),
-                                                    ((I2C_data[x]["side_I2C"])),
-                                                    ((I2C_data[x]["outlet_I2C"])))
-                        element_active = x
+                    if (((I2C_data[x]["module"] == module
+                          and I2C_data[x]["outlet"] == outlet))):
+                        elmnt_act = x
+                self.i2c.write_byte_data(((I2C_data[elmnt_act]["module_I2C"])),
+                                         ((I2C_data[elmnt_act]["side_I2C"])),
+                                         ((I2C_data[elmnt_act]["outlet_I2C"])))
                 sleep(time_actuator_on)
                 sent = True
             except OSError:
@@ -44,9 +45,9 @@ class Robo_typer(SMBus):
         sent = False
         while (sent is False):
             try:
-                self.i2cbus.write_byte_data(((I2C_data[element_active]["module_I2C"])),
-                                            ((I2C_data[element_active]["side_I2C"])),
-                                            0)
+                self.i2c.write_byte_data(((I2C_data[elmnt_act]["module_I2C"])),
+                                         ((I2C_data[elmnt_act]["side_I2C"])),
+                                         (0))
                 sleep(time_actuator_off)
                 sent = True
             except OSError:

@@ -9,7 +9,6 @@ if __name__ == "__main__":
     robo_typer.type_char("s")
     sleep(3)
     robo_typer.type_string("sdsfsdfasf")
-    
     '''
     robo_typer.switch_module_outlet(3, 8)
     sleep(1)
