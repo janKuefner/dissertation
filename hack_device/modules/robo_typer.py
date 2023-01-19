@@ -9,116 +9,44 @@ class Robo_typer(SMBus):
         self.switched_to_numbers = False
 
     def initialize_I2Cs(self):
-        #  initializing I2C adress 0x20
-        '''I2C address 0x20, side A, GPIOs set to output'''
+        '''initializing all 3 I2C GPIO chips of the machine on both sides.
+        1st 0x value is the chip adress, 0x20 = chip 1, 0x21 = chip 2, ...
+        2nd 0x value is the side of the chip 0x00 = side A, 0x01 = side B
+        3rd 0x value is teh command to set GPIO pins to output
+        I2C address 0x20, side A, GPIOs set to output'''
         self.i2cbus.write_word_data(0x20, 0x00, 0x00)
-        '''I2C address 0x20, side B, GPIOs set to output'''
         self.i2cbus.write_word_data(0x20, 0x01, 0x00)
-        #  initializing I2C adress 0x21
-        '''I2C address 0x20, side A, GPIOs set to output'''
         self.i2cbus.write_word_data(0x21, 0x00, 0x00)
-        '''I2C address 0x20, side B, GPIOs set to output'''
         self.i2cbus.write_word_data(0x21, 0x01, 0x00)
-        #  initializing I2C adress 0x22
-        '''I2C address 0x20, side A, GPIOs set to output'''
         self.i2cbus.write_word_data(0x22, 0x00, 0x00)
-        '''I2C address 0x20, side B, GPIOs set to output'''
         self.i2cbus.write_word_data(0x22, 0x01, 0x00)
 
-    def switch_module_pin(self, module, pin):
-        '''this funnction sitches actuator of a certain module and pin'''
-        # general times the actuator stays actived / deactiveted
+    def switch_module_pin(self, module, outlet_number):
+        '''this funnction sitches actuator of a certain module and outlet_number'''
         time_actuator_on = 0.1   # time the actuator is powered.
         time_actuator_off = 0.01  # time the actuator is off.
-        '''the following code switches on and off a certain actuator'''
-        # get the module I2C adress as hex value
-        if module == 1:
-            i2caddress = 0x20
-        elif module == 2:
-            i2caddress = 0x21
-        elif module == 3:
-            i2caddress = 0x22
-        else:
-            raise ValueError("This module number is not defined")
-        # get the pin and side as hex value
-        # A side = 0x12
-        # B side = 0x15
-        if pin == 0:
-            pin_hex = 0x00
-            A_or_B_side = 0x12
-        elif pin == 1:
-            pin_hex = 0x01
-            A_or_B_side = 0x12
-        elif pin == 2:
-            pin_hex = 0x02
-            A_or_B_side = 0x12
-        elif pin == 3:
-            pin_hex = 0x04
-            A_or_B_side = 0x12
-        elif pin == 4:
-            pin_hex = 0x08
-            A_or_B_side = 0x12
-        elif pin == 5:
-            pin_hex = 0x10
-            A_or_B_side = 0x12
-        elif pin == 6:
-            pin_hex = 0x20
-            A_or_B_side = 0x12
-        elif pin == 7:
-            pin_hex = 0x40
-            A_or_B_side = 0x12
-        elif pin == 8:
-            pin_hex = 0x80
-            A_or_B_side = 0x12
-        elif pin == 9:
-            pin_hex = 0x01
-            A_or_B_side = 0x15
-        elif pin == 10:
-            pin_hex = 0x02
-            A_or_B_side = 0x15
-        elif pin == 11:
-            pin_hex = 0x04
-            A_or_B_side = 0x15
-        elif pin == 12:
-            pin_hex = 0x08
-            A_or_B_side = 0x15
-        elif pin == 13:
-            pin_hex = 0x10
-            A_or_B_side = 0x15
-        elif pin == 14:
-            pin_hex = 0x20
-            A_or_B_side = 0x15
-        elif pin == 15:
-            pin_hex = 0x40
-            A_or_B_side = 0x15
-        elif pin == 16:
-            pin_hex = 0x80
-            A_or_B_side = 0x15
-        else:
-            raise ValueError("This pin number is not defined")
-        '''send hex values to chip in order to switch on the actuactor'''
+        with open('modules/I2C_data.json') as json_file:
+            I2C_data = json.load(json_file)
         sent = False
         while (sent is False):
             try:
-                self.i2cbus.write_byte_data(i2caddress, A_or_B_side, pin_hex)
+                for x in range(51):
+                    if (((I2C_data[x]["module"] == module and I2C_data[x]["outlet_number"] == outlet_number))):
+                        self.i2cbus.write_byte_data(((I2C_data[x]["module_I2C"])),
+                                                    ((I2C_data[x]["side_I2C"])),
+                                                    ((I2C_data[x]["outlet_number_I2C"])))
+                        element_active = x 
                 sleep(time_actuator_on)
                 sent = True
             except OSError:
                 sent = False
-        ''' switch off A and B side'''
         sent = False
         while (sent is False):
             try:
-                self.i2cbus.write_byte_data(i2caddress, 0x12, 0x00)
-                sleep(time_actuator_off / 2)
-                sent = True
-            except OSError:
-                sent = False
-        sent = False
-        while (sent is False):
-            try:
-                self.i2cbus.write_byte_data(i2caddress, 0x15, 0x00)
-                sleep(time_actuator_off / 2)
+                self.i2cbus.write_byte_data(((I2C_data[element_active]["module_I2C"])),
+                                            ((I2C_data[element_active]["side_I2C"])),
+                                            0)
+                sleep(time_actuator_off)
                 sent = True
             except OSError:
                 sent = False
@@ -150,13 +78,10 @@ class Robo_typer(SMBus):
         for p in range(1, 8):
             self.switch_row_pin(1, p)
             sleep(0.5)
-            print("Reihe ", 1, " Pin ", p, "hat geschalten")
-
         for m in range(2, 5):
             for p in range(1, 12):
                 self.switch_row_pin(m, p)
                 sleep(0.5)
-                print("Reihe ", m, " Pin ", p, "hat geschalten")
 
     def hack_type_char(self, char_to_hacktype):
         '''row 1'''
