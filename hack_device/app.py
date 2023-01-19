@@ -7,12 +7,13 @@ if __name__ == "__main__":
     robo_typer = Robo_typer()  # create a robo_typer object
     robo_typer.initialize_I2Cs()  # initalize I2C
     robo_typer.switch_every_actuator_once_sorted()
+    
     '''
-    robo_typer.switch_module_pin(3, 8)
+    robo_typer.switch_module_outlet(3, 8)
     sleep(1)
-    robo_typer.switch_module_pin(3, 9)
+    robo_typer.switch_module_outlet(3, 9)
     sleep(1)
-    robo_typer.switch_module_pin(3, 10)
+    robo_typer.switch_module_outlet(3, 10)
     sleep(1)
     '''
     
