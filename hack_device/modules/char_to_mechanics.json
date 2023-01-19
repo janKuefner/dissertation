@@ -82,5 +82,4 @@
     {"char": "8", "special_state": "Y", "row": 4, "actuator": 8},
     {"char": "9", "special_state": "Y", "row": 4, "actuator": 9},
     {"char": "0", "special_state": "Y", "row": 4, "actuator": 10}
-
 ]
