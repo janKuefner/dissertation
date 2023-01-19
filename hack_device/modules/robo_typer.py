@@ -83,69 +83,69 @@ class Robo_typer(SMBus):
             for p in range(1, 12):
                 self.switch_row_actuator(m, p)
 
-    def type_char(self, char_to_hacktype):
+    def type_char(self, char_to_type):
         '''row 1'''
-        if char_to_hacktype == " ":
+        if char_to_type == " ":
             self.switch_row_actuator(1, 4)
             ''' row 2 '''
-        elif char_to_hacktype == "z":
+        elif char_to_type == "z":
             self.switch_row_actuator(2, 2)
-        elif char_to_hacktype == "x":
+        elif char_to_type == "x":
             self.switch_row_actuator(2, 3)
-        elif char_to_hacktype == "c":
+        elif char_to_type == "c":
             self.switch_row_actuator(2, 4)
-        elif char_to_hacktype == "v":
+        elif char_to_type == "v":
             self.switch_row_actuator(2, 5)
-        elif char_to_hacktype == "b":
+        elif char_to_type == "b":
             self.switch_row_actuator(2, 6)
-        elif char_to_hacktype == "n":
+        elif char_to_type == "n":
             self.switch_row_actuator(2, 7)
-        elif char_to_hacktype == "m":
+        elif char_to_type == "m":
             self.switch_row_actuator(2, 8)
             ''' row 3  '''
-        elif char_to_hacktype == "a":
+        elif char_to_type == "a":
             self.switch_row_actuator(3, 2)
-        elif char_to_hacktype == "s":
+        elif char_to_type == "s":
             self.switch_row_actuator(3, 3)
-        elif char_to_hacktype == "d":
+        elif char_to_type == "d":
             self.switch_row_actuator(3, 4)
-        elif char_to_hacktype == "f":
+        elif char_to_type == "f":
             self.switch_row_actuator(3, 5)
-        elif char_to_hacktype == "g":
+        elif char_to_type == "g":
             self.switch_row_actuator(3, 6)
-        elif char_to_hacktype == "h":
+        elif char_to_type == "h":
             self.switch_row_actuator(3, 7)
-        elif char_to_hacktype == "j":
+        elif char_to_type == "j":
             self.switch_row_actuator(3, 8)
-        elif char_to_hacktype == "k":
+        elif char_to_type == "k":
             self.switch_row_actuator(3, 9)
-        elif char_to_hacktype == "l":
+        elif char_to_type == "l":
             self.switch_row_actuator(3, 10)
             ''' row 4 '''
-        elif char_to_hacktype == "q":
+        elif char_to_type == "q":
             self.switch_row_actuator(4, 1)
-        elif char_to_hacktype == "w":
+        elif char_to_type == "w":
             self.switch_row_actuator(4, 2)
-        elif char_to_hacktype == "e":
+        elif char_to_type == "e":
             self.switch_row_actuator(4, 3)
-        elif char_to_hacktype == "r":
+        elif char_to_type == "r":
             self.switch_row_actuator(4, 4)
-        elif char_to_hacktype == "t":
+        elif char_to_type == "t":
             self.switch_row_actuator(4, 5)
-        elif char_to_hacktype == "y":
+        elif char_to_type == "y":
             self.switch_row_actuator(4, 6)
-        elif char_to_hacktype == "u":
+        elif char_to_type == "u":
             self.switch_row_actuator(4, 7)
-        elif char_to_hacktype == "i":
+        elif char_to_type == "i":
             self.switch_row_actuator(4, 8)
-        elif char_to_hacktype == "o":
+        elif char_to_type == "o":
             self.switch_row_actuator(4, 9)
-        elif char_to_hacktype == "p":
+        elif char_to_type == "p":
             self.switch_row_actuator(4, 10)
         else:
             # raise ValueError("This char is not defined")
-            print(char_to_hacktype, " is not defined")
+            print(char_to_type, " is not defined")
 
-    def type_string(self, string_to_hacktype):
-        for letter in string_to_hacktype:
+    def type_string(self, string_to_type):
+        for letter in string_to_type:
             self.type_char(letter)
