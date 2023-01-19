@@ -1,12 +1,12 @@
 from smbus2 import SMBus  # necessary for I2C communication
 from time import sleep  # necessary for I2 communication
-import json
+import json # necessary to read external Json files
 
 
 class Robo_typer(SMBus):
     def __init__(self):
         self.i2c = SMBus(1)
-        self.switched_to_numbers = False
+        self.is_special = False
 
     def initialize_I2Cs(self):
         '''initializing all 3 I2C GPIO chips of the machine on both sides.
@@ -84,66 +84,25 @@ class Robo_typer(SMBus):
                 self.switch_row_actuator(m, p)
 
     def type_char(self, char_to_type):
-        '''row 1'''
-        if char_to_type == " ":
-            self.switch_row_actuator(1, 4)
-            ''' row 2 '''
-        elif char_to_type == "z":
-            self.switch_row_actuator(2, 2)
-        elif char_to_type == "x":
-            self.switch_row_actuator(2, 3)
-        elif char_to_type == "c":
-            self.switch_row_actuator(2, 4)
-        elif char_to_type == "v":
-            self.switch_row_actuator(2, 5)
-        elif char_to_type == "b":
-            self.switch_row_actuator(2, 6)
-        elif char_to_type == "n":
-            self.switch_row_actuator(2, 7)
-        elif char_to_type == "m":
-            self.switch_row_actuator(2, 8)
-            ''' row 3  '''
-        elif char_to_type == "a":
-            self.switch_row_actuator(3, 2)
-        elif char_to_type == "s":
-            self.switch_row_actuator(3, 3)
-        elif char_to_type == "d":
-            self.switch_row_actuator(3, 4)
-        elif char_to_type == "f":
-            self.switch_row_actuator(3, 5)
-        elif char_to_type == "g":
-            self.switch_row_actuator(3, 6)
-        elif char_to_type == "h":
-            self.switch_row_actuator(3, 7)
-        elif char_to_type == "j":
-            self.switch_row_actuator(3, 8)
-        elif char_to_type == "k":
-            self.switch_row_actuator(3, 9)
-        elif char_to_type == "l":
-            self.switch_row_actuator(3, 10)
-            ''' row 4 '''
-        elif char_to_type == "q":
-            self.switch_row_actuator(4, 1)
-        elif char_to_type == "w":
-            self.switch_row_actuator(4, 2)
-        elif char_to_type == "e":
-            self.switch_row_actuator(4, 3)
-        elif char_to_type == "r":
-            self.switch_row_actuator(4, 4)
-        elif char_to_type == "t":
-            self.switch_row_actuator(4, 5)
-        elif char_to_type == "y":
-            self.switch_row_actuator(4, 6)
-        elif char_to_type == "u":
-            self.switch_row_actuator(4, 7)
-        elif char_to_type == "i":
-            self.switch_row_actuator(4, 8)
-        elif char_to_type == "o":
-            self.switch_row_actuator(4, 9)
-        elif char_to_type == "p":
-            self.switch_row_actuator(4, 10)
-        else:
-            # raise ValueError("This char is not defined")
+        with open('modules/char_to_mechanics.json') as json_file:
+            c_to_m_data = json.load(json_file)
+            data_entry_found = False
+        for x in range(83):
+            if (c_to_m_data[x]["char"] == char_to_type):
+                if c_to_m_data[x]["special_state"] == "UP":
+                    self.switch_row_actuator(2, 1)  # press SHIFT button
+                if (((self.is_special is False and
+                      c_to_m_data[x]["special_state"] == "Y"))):
+                    self.switch_row_actuator(1, 1)  # switch to letters
+                    self.is_special = True
+                elif (self.is_special is True and
+                      c_to_m_data[x]["special_state"] == "N"):
+                    self.switch_row_actuator(1, 1)  # switch to numbers
+                    self.is_special = False
+                self.switch_row_actuator((c_to_m_data[x]["row"]),
+                                         (c_to_m_data[x]["actuator"]))
+                data_entry_found = True
+        if data_entry_found is False:
             print(char_to_type, " is not defined")
 
     def type_string(self, string_to_type):
