@@ -1,1 +1,1 @@
-scp -r hack_device/ pi@192.168.1.165:/home/pi/Desktop
+scp -r hack_device/ pi@192.168.178.39:/home/pi/Desktop

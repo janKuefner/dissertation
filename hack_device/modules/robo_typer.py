@@ -1,12 +1,12 @@
 from smbus2 import SMBus  # smbus2 is necessary for I2C communication
 from time import sleep  # sleep is used to pause the programm
-import json # json is used to read external Json files
+import json  # json is used to read external Json files
 
 
 class Robo_typer(SMBus):
     '''this object controls the typing hardware.'''
     def __init__(self):
-        self.i2c = SMBus(1)  # this sub object is created to use its methods
+        self.i2c = SMBus(1)  # Robo_typer inherits from SMBus Object
         self.set_2_spcl = False  # is the keyboard set to special characters
 
     def initialize_I2Cs(self):
