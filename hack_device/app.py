@@ -26,11 +26,11 @@ class Hack_device(Robo_typer, Picamera2):
             self.robo_typer.type_string(line.strip('\n') + "   ")
             print("Taking photo")  # info for operator
             self.picam2.capture_file("images/image01.jpg")  # take picture
-            print("transferring photo to text") # info for operator
+            print("transferring photo to text")  # info for operator
             '''the following AI converts the image to text'''
             result = self.reader.readtext('images/image01.jpg', detail=0)
             result_str = " ".join(result)  # merge the result list to a string
-            print("This is what I read", result) # info for operator
+            print("This is what I read", result)  # info for operator
             f = open("results.txt", "a")  # open file for appending
             '''the following concenacts what was typed and the result text,
             which was AI converted from the camera'''
@@ -41,4 +41,5 @@ class Hack_device(Robo_typer, Picamera2):
 
 if __name__ == "__main__":
     hack_device = Hack_device()  # create a hack_device object
+    print(type(hack_device.wrdlst))
     hack_device.bruteforce()  # start the bruteforce method
