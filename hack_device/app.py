@@ -1,6 +1,7 @@
 from picamera2 import Picamera2, Preview  # import library to use Pi`s webcam 
 import easyocr  # import AI image to text transformer
 from modules.robo_typer import Robo_typer  # import the Robo_typer object
+import time
 
 
 class Hack_device(Robo_typer, Picamera2):
@@ -20,10 +21,11 @@ class Hack_device(Robo_typer, Picamera2):
         f.close()  # close file
         for line in self.wrdlst:  # try every line entry in the wordlist
             print("\nI am typing:", line.strip('\n'))  # info for operator
-            '''the following let`s the hack device type the line entry of the 
-            wordlist. In other words: The hacking device is typing one 
+            '''the following let`s the hack device type the line entry of the
+            wordlist. In other words: The hacking device is typing one
             password'''
             self.robo_typer.type_string(line.strip('\n') + "   ")
+            self.robo_typer.switch_module_outlet(3, 8)  # hit the enter key
             print("Taking photo")  # info for operator
             self.picam2.capture_file("images/image01.jpg")  # take picture
             print("transferring photo to text")  # info for operator
@@ -41,5 +43,4 @@ class Hack_device(Robo_typer, Picamera2):
 
 if __name__ == "__main__":
     hack_device = Hack_device()  # create a hack_device object
-    print(type(hack_device.wrdlst))
     hack_device.bruteforce()  # start the bruteforce method
