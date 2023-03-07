@@ -26,6 +26,7 @@ class Hack_device(Robo_typer, Picamera2):
             password'''
             self.robo_typer.type_string(line.strip('\n') + "   ")
             self.robo_typer.switch_module_outlet(3, 8)  # hit the enter key
+            time.sleep(0.5)
             print("Taking photo")  # info for operator
             self.picam2.capture_file("images/image01.jpg")  # take picture
             print("transferring photo to text")  # info for operator

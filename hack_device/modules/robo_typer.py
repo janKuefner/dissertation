@@ -119,5 +119,5 @@ class Robo_typer(SMBus):
             print(char_to_type, " is not defined")
 
     def type_string(self, string_to_type):
-        for letter in string_to_type:
+        for letter in string_to_type.strip():  # strip() deletes whitespaces
             self.type_char(letter)
