@@ -50,5 +50,4 @@
     {"module": 3, "outlet": 14, "module_I2C": 34, "side_I2C": 21, "outlet_I2C": 32},
     {"module": 3, "outlet": 15, "module_I2C": 34, "side_I2C": 21, "outlet_I2C": 64},
     {"module": 3, "outlet": 16, "module_I2C": 34, "side_I2C": 21, "outlet_I2C": 128}
-
 ]
