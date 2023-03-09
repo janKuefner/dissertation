@@ -66,6 +66,10 @@ class Robo_typer(SMBus):
             except OSError:
                 sent = False
 
+    def add(self, x, y):
+        """Add Function"""
+        return x + y
+
     def switch_row_actuator(self, row, actuator):
         with open('modules/electronics_to_mechanics.json') as json_file:
             e_to_m_data = json.load(json_file)
