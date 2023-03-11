@@ -4,7 +4,9 @@ import json  # json is used to read external Json files
 
 
 class Robo_typer(SMBus):
-    '''this object controls the typing hardware.'''
+    '''this object has all the methods necessary to control the typing
+    hardware. In other words: with this object you can make the hacking device
+    type on the mock-up medical device'''
     def __init__(self):
         self.i2c = SMBus(1)  # Robo_typer inherits from SMBus Object
         self.set_2_spcl = False  # is the keyboard set to special characters
@@ -67,6 +69,13 @@ class Robo_typer(SMBus):
                 sent = False
 
     def switch_row_actuator(self, row, actuator):
+        '''this method switches row 1-4 and their actuators 1-11. In other
+        words: When you call this method with row=1 and actuator=10. In the
+        first row actuator ten will move. When you call this method with
+        row = -1 and actuator 2, you will get an exception, since the hacking
+        device does not have row -1. '''
+        '''Which electrical outlet translates to which row and actuator is
+        again documnted in a Json file, which is loaded in the following'''
         with open('modules/electronics_to_mechanics.json') as json_file:
             e_to_m_data = json.load(json_file)
             data_entry_found = False
@@ -81,15 +90,15 @@ class Robo_typer(SMBus):
                              " combination is not defined")
 
     def switch_every_actuator_once(self):
-        '''this method switches all actuators once. This method is sort of
-        to help setting up or troubleshooting the hardware.'''
+        '''this method switches all actuators once. This method is used
+        for manual testing the hardware.'''
         for m in range(1, 4):
             for p in range(1, 17):
                 self.switch_module_outlet(m, p)
 
     def switch_every_actuator_once_sorted(self):
-        '''this method switches all actuators once. This method is
-        to help setting up or troubleshooting the hardware.'''
+        '''this method switches all actuators once. This method is used
+        for manual testing the hardware.'''
         for p in range(1, 8):
             self.switch_row_actuator(1, p)
         for m in range(2, 5):
@@ -97,9 +106,16 @@ class Robo_typer(SMBus):
                 self.switch_row_actuator(m, p)
 
     def type_char(self, char_to_type):
+        '''this method types a char. In other words: When you call this method
+        with char="a" the hacking device will type an "a". '''
+        '''Which row and actuator translates to which character is again
+        documnted in a Json file, which is loaded in the following'''
         with open('modules/char_to_mechanics.json') as json_file:
             c_to_m_data = json.load(json_file)
             data_entry_found = False
+        '''for typing letters and numbers you have to switch between views.
+        This is realized within the following. Also pressing the shift button
+        for capital letters is realized in the following'''
         for x in range(83):
             if (c_to_m_data[x]["char"] == char_to_type):
                 if c_to_m_data[x]["special_state"] == "UP":
@@ -116,8 +132,13 @@ class Robo_typer(SMBus):
                                          (c_to_m_data[x]["actuator"]))
                 data_entry_found = True
         if data_entry_found is False:
+            '''an exception is not throw here. The error is rather logged on
+            the screen to not interrupt a lengthy test.'''
             print(char_to_type, " is not defined")
 
     def type_string(self, string_to_type):
+        '''this method types a string. In other words: When you call this
+        method with string_to_type="Hello world!" the hacking device will type
+        an "Hello world!".'''
         for letter in string_to_type.strip():  # strip() deletes whitespaces
             self.type_char(letter)

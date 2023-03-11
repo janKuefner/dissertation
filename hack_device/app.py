@@ -26,17 +26,17 @@ class Hack_device(Robo_typer, Picamera2):
             password'''
             self.robo_typer.type_string(line.strip('\n') + "   ")
             self.robo_typer.switch_module_outlet(3, 8)  # hit the enter key
-            time.sleep(0.5)
+            time.sleep(0.5)  # wait for typing to take place
             print("Taking photo")  # info for operator
             self.picam2.capture_file("images/image01.jpg")  # take picture
             print("transferring photo to text")  # info for operator
-            '''the following AI converts the image to text'''
+            '''the following converts the image to text via AI'''
             result = self.reader.readtext('images/image01.jpg', detail=0)
             result_str = " ".join(result)  # merge the result list to a string
             print("This is what I read", result)  # info for operator
             f = open("results.txt", "a")  # open file for appending
             '''the following concenacts what was typed and the result text,
-            which was AI converted from the camera'''
+            which was AI converted from the camera to the result text file'''
             new_line = line.strip('\n') + " - " + result_str + "\n"
             f.write(new_line)  # append the new line
             f.close()  # close file
