@@ -1,4 +1,4 @@
-from picamera2 import Picamera2, Preview  # import library to use Pi`s webcam 
+from picamera2 import Picamera2, Preview  # import library to use Pi`s webcam
 import easyocr  # import AI image to text transformer
 from modules.robo_typer import Robo_typer  # import the Robo_typer object
 import time
